@@ -29,11 +29,12 @@ class TablaHashBuckets:
     def buscar(self, clave):
         indice = self.funcion_hash(clave)
         bucket = self.tabla[indice]
-        
-        if clave in bucket:
-            return f"Clave {clave} encontrada en el bucket {indice}"
-        else:
-            return f"Clave {clave} no encontrada"
+        pasos = 0
+        for k in bucket:  # Recorremos el bucket
+            pasos += 1  # Contamos cada comparación
+            if k == clave:
+                return pasos  # Clave encontrada, devolvemos el número de comparaciones
+        return pasos  # Clave no encontrada, devolvemos el número de comparaciones
 
     # Informar sobre los buckets desbordados
     def contar_buckets_desbordados(self):
@@ -82,3 +83,6 @@ print(f"Cantidad de buckets desbordados: {buckets_desbordados}")
 # Informar sobre los buckets subocupados
 buckets_subocupados = tabla_hash.contar_buckets_subocupados()
 print(f"Cantidad de buckets subocupados: {buckets_subocupados}")
+
+b = tabla_hash.buscar(66)
+print(f"Resultado de búsqueda: {b}")

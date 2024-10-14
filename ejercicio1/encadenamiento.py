@@ -20,10 +20,12 @@ class TablaHashEncadenamiento:
     # Buscar una clave en la tabla
     def buscar(self, clave):
         indice = self.funcion_hash(clave)  # Obtenemos el índice de la clave
-        if clave in self.tabla[indice]:  # Si la clave está en la lista de ese índice
-            return f"Clave {clave} encontrada en el índice {indice}"
-        else:
-            return f"Clave {clave} no encontrada"
+        pasos = 0
+        for k in self.tabla[indice]:  # Recorremos la lista de sinónimos
+            pasos += 1  # Contamos cada comparación
+            if k == clave:
+                return pasos  # Clave encontrada, devolvemos el número de comparaciones
+        return pasos  # Clave no encontrada, devolvemos el número de comparaciones
 
     # Calcular la longitud de cada lista de claves sinónimas
     def longitud_listas(self):
@@ -70,6 +72,6 @@ resultado_busqueda = tabla_hash.buscar(clave_a_buscar)
 print(resultado_busqueda)
 
 # Buscar una clave que no esté en la tabla
-clave_no_insertada = 99999
+clave_no_insertada = 66
 resultado_busqueda = tabla_hash.buscar(clave_no_insertada)
 print(resultado_busqueda)

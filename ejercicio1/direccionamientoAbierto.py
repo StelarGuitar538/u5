@@ -28,14 +28,15 @@ class TablaHash:
         pasos = 0
         intentos = 0
         while self.tabla[indice] is not None:
+            pasos += 1  # Cada comparación cuenta
             if self.tabla[indice] == clave:
-                return pasos  # Clave encontrada
-            pasos += 1
+                return pasos  # Clave encontrada, devolvemos el número de comparaciones
             intentos += 1
             if intentos >= self.tamano:  # Evitar ciclos infinitos si la clave no está
                 break
             indice = (indice + 1) % self.tamano  # Prueba lineal
-        return pasos  # Clave no encontrada (espacio vacío)
+        return pasos  # Clave no encontrada, devolvemos las comparaciones hechas
+
 
     def insertar_muchas_claves(self, claves):
         total_pasos = 0
@@ -65,8 +66,10 @@ def comparar_tamano_tabla(tamano_no_primo, tamano_primo, claves):
     tabla_no_primo = TablaHash(tamano_no_primo)
     promedio_pasos_insercion = tabla_no_primo.insertar_muchas_claves(claves)
     promedio_pasos_busqueda = tabla_no_primo.buscar_muchas_claves(claves)
+    b = tabla_no_primo.buscar(66)
     print(f"  Promedio de pasos por inserción: {promedio_pasos_insercion}")
     print(f"  Promedio de pasos por búsqueda: {promedio_pasos_busqueda}")
+    print(f"  Resultado de búsqueda: {b}")
     print("\n")
 
     # Caso 2: Tabla Hash con tamaño primo
@@ -74,8 +77,11 @@ def comparar_tamano_tabla(tamano_no_primo, tamano_primo, claves):
     tabla_primo = TablaHash(tamano_primo)
     promedio_pasos_insercion = tabla_primo.insertar_muchas_claves(claves)
     promedio_pasos_busqueda = tabla_primo.buscar_muchas_claves(claves)
+    b = tabla_no_primo.buscar(66)
     print(f"  Promedio de pasos por inserción: {promedio_pasos_insercion}")
     print(f"  Promedio de pasos por búsqueda: {promedio_pasos_busqueda}")
+    print(f"  Resultado de búsqueda: {b}")
+
 
 # Generar 1000 claves numéricas aleatorias
 claves = generar_claves_aleatorias(1000)
