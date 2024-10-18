@@ -1,3 +1,4 @@
+
 import random
 import numpy as np
 
@@ -20,14 +21,20 @@ class Da:
     def insertar(self, clave):
         indice = self.dvisionesSucesivas(clave)
         pasos = 0
-        while self.__tabla[indice] != 0:
-            indice = (indice + 1) % self.__tamano
+        if self.__tabla[indice] == 0:
+            self.__tabla[indice] = clave
             pasos += 1
-            if pasos == self.__tamano:
+            print(f"Clave {clave} insertada en la posicion {indice} despues de {pasos} pasos")
+        else:
+            while self.__tabla[indice] != 0 and pasos < self.__tamano:
+                indice = (indice + 1) % self.__tamano
+                pasos += 1
+            if self.__tabla[indice] == 0:
+                self.__tabla[indice] = clave
+                print(f"Clave {clave} insertada en la posicion {indice} despues de {pasos} pasos")
+            else:
                 raise Exception("Tabla llena")
-        self.__tabla[indice] = clave
-        print(f"Clave {clave} insertada en la posicion {indice} despues de {pasos} pasos")
-        
+
     def buscar(self, clave):
         indice = self.dvisionesSucesivas(clave)
         pasos = 0
