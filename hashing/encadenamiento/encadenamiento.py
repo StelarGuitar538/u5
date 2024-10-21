@@ -1,4 +1,5 @@
 import random
+from nodo import Nodo
 
 class TablaHashEnncadenamiento:
     __tabla: int
@@ -8,7 +9,12 @@ class TablaHashEnncadenamiento:
     def __init__(self, cla):
         self.__claves = cla
         self.__tamano = self.__claves
-        self.__tabla = [[] for _ in range(self.__tamano)]
+        self.__tabla = [None for _ in range(self.__tamano)]
+        
+    def agregar(self, clave, indice):
+        nodo = Nodo(clave)
+        nodo.setSig(self.__tabla[indice])
+        self.__tabla[indice] = nodo
        
         
     def divisionesSucesivas(self, clave):
@@ -16,21 +22,29 @@ class TablaHashEnncadenamiento:
     
     def insertar(self, clave):
         indice = self.divisionesSucesivas(clave)
-        self.__tabla[indice].append(clave)
+        self.agregar(clave, indice)
         print(f"Clave {clave} insertada en la posicion {indice}")
         
     def buscar(self, clave):
         indice = self.divisionesSucesivas(clave)
+        actual = self.__tabla[indice]
         i=0
         try:
-            while self.__tabla[indice][i] != clave:
+            while actual.getDato() != clave and actual.getSig() != None:
+                actual = actual.getSig()
                 i+=1
-            print(f"clave {clave} encontrada en la posicion de la tabla {indice} y en la posicion de la lista {i}")
+            print(f"Clave {clave} encontrada en la posicion {indice} en el nodo {i}")
         except IndexError:
-            print(f"clave {clave} no encontrada")
-            
+            print(f"No se encontro la clave {clave}")
+        
     def tabla(self):
-        print(self.__tabla)
+       for i in range(self.__tamano):
+            print(f"Índice {i}: ", end="")
+            actual = self.__tabla[i]
+            while actual is not None:
+                print(f"{actual.getDato()} -> ", end="")
+                actual = actual.getSig()
+            print("None")
         
 if __name__ == "__main__":
     tabla = TablaHashEnncadenamiento(20)
