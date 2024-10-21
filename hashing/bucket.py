@@ -41,7 +41,7 @@ class Bucket:
                     print("tabla llena")
         return c
 
-    def buscar(self, clave):
+    '''def buscar(self, clave):
         indice = self.divAreaPrimaria(clave)
         tamano = int(self.__tamano * 0.8) 
         i=0
@@ -53,10 +53,26 @@ class Bucket:
             elif indice > tamano:
                 print(f"clave {clave} encontrada en el area overflow indice {indice - tamano}")
         except IndexError:
-            print("clave no encontrada")
+            print("clave no encontrada")'''
             
+    def buscar(self, clave):
+        indice = self.divAreaPrimaria(clave)
+        tamano = int(self.__tamano * 0.8)
+        indiceOverflow =tamano
+        i=0
+        while i < self.__cantBuckets:
+            if self.__tabla[indice][i] == clave:
+                print(f"clave {clave} encontrada en el area primaria indice {indice}")
+            i+=1
 
-    
+        while indiceOverflow < self.__tamano:
+            i=0
+            while i < self.__cantBuckets:
+                if self.__tabla[indiceOverflow][i] == clave:
+                    print(f"clave {clave} encontrada en el area overflow indice {indiceOverflow}")
+                i+=1
+            indiceOverflow +=1
+
     def mostrar(self):
         tamano = int(self.__tamano * 0.8)
         print("area primaria")
