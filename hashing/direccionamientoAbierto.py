@@ -44,6 +44,10 @@ class Da:
             if pasos == self.__tamano:
                 raise Exception("posicion no encontrada")
         print(f"Clave {clave} encontrada en la posicion {indice} despues de {pasos} pasos")
+        
+    def mostrar(self):
+        for i in range(self.__tamano):
+            print(f"{self.__tabla[i]}")
     
 if __name__ == "__main__":
         da = Da(0.7, 50)
@@ -54,5 +58,7 @@ if __name__ == "__main__":
         for _ in range(50):
             da.insertar(generarClave())
             
+        da.mostrar()
+        
         claveBuscar = int(input("Clave a buscar: "))
         da.buscar(claveBuscar)
