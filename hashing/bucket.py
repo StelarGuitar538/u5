@@ -6,47 +6,34 @@ class Bucket:
     __claves: int
     __tamano: int
     __cantBuckets: int
+    __arregloAuxiliar: np.ndarray
+    __indiceOverflow: int
+    __areaPrimaria: int
     
     def __init__(self, cla, cb):
         self.__claves = cla
         self.__cantBuckets = cb
         self.__tamano = int(((self.__claves / self.__cantBuckets)) * 1.2)
         self.__tabla = np.zeros((self.__tamano, self.__cantBuckets))
-        
+        self.__arregloAuxiliar = np.zeros(self.__tamano)
+        self.__indiceOverflow = self.__areaPrimaria
+        self.__areaPrimaria = self.__tamano *0.8
 
     def divAreaPrimaria(self, clave):
-        return int(clave % self.__tamano)
+        return int(clave % self.__areaPrimaria)
     
     def insertar(self, clave, c):
         indice = self.divAreaPrimaria(clave)
-        tamano = int(self.__tamano * 0.8)
-        i = 0
-
-        # Verificación e inserción en el área primaria
-        if indice < tamano:
-            while i < self.__cantBuckets:
-                if self.__tabla[indice][i] == 0:  # Espacio vacío encontrado
-                    self.__tabla[indice][i] = clave
-                    c += 1
-                    print(f"Clave {clave} insertada en la posición {indice}, bucket {i}")
-                    return c
-                i += 1
-
-        # Si el área primaria está llena, insertar en el área de overflow
-        indiceOverflow = tamano
-        while indiceOverflow < self.__tamano:
-            i = 0
-            while i < self.__cantBuckets:
-                if self.__tabla[indiceOverflow][i] == 0:  # Espacio vacío encontrado en overflow
-                    self.__tabla[indiceOverflow][i] = clave
-                    print(f"Área primaria llena. Clave {clave} insertada en el área de overflow en posición {indiceOverflow}, bucket {i}")
-                    return c
-                i += 1
-            indiceOverflow += 1
-
-        # Si no hay espacio en ninguna parte
-        print("Tabla llena, no se pudo insertar la clave")
-        return c
+        if self.__arregloAuxiliar[indice] < self.__cantBuckets:
+            j = self.__arregloAuxiliar[indice]
+            self.__tabla[indice][j] = clave
+            self.__arregloAuxiliar[indice] +=1
+        else:
+            j = self.__indiceOverflow
+            while self.__arregloAuxiliar[j] >= self.__cantBuckets:
+                j+=1
+            if j < self.__tamano:
+                self.__tabla[j][self.__arregloAuxiliar[j]] = clave
 
 
     '''def buscar(self, clave):
